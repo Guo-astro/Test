@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "こだわりん",
+    "description": "食べるの物語",
+    "slug": "kodawarin",
+    "privacy": "unlisted",
+    "sdkVersion": "27.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "icon": "app/assets/logos/logo_kodawarin_app.png",
+   
+    "packagerOpts": {
+      "assetExts": [
+        "ttf",
+        "mp4",
+        "otf",
+        "xml"
+      ]
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
