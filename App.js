@@ -4,25 +4,39 @@ import {
   createStackNavigator,
   createSwitchNavigator
 } from 'react-navigation';
-import { Platform, StatusBar } from "react-native";
+import {
+  StatusBar,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from "react-native";
+import { Font, AppLoading } from 'expo';
 
 import tabBarIcon from './utils/tabBarIcon';
 // Import the screens
 import FeedScreen from './screens/FeedScreen';
 import NewPostScreen from './screens/NewPostScreen';
 import SelectPhotoScreen from './screens/SelectPhotoScreen';
-import AuthLoadingScreen from './screens/AuthLoadingScreen';
-import SignInScreen from './screens/SignInScreen';
-import SignUpScreen from "./screens/SignUpScreen";
+
 import ProfileScreen from "./screens/ProfileScreen";
 import { isSignedIn } from "./auth";
 import React from "react";
+import { Provider } from 'react-redux';
+import Register from './app/modules/auth/scenes/Register'
 
+import Welcome from './app/modules/auth/scenes/Welcome'
+import Login from './app/modules/auth/scenes/Login'
 
+import store from './app/redux/store';
 
 const headerStyle = {
   marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
 };
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
 
 /** Create our main tab navigator for moving between the Feed and Photo screens
 **/
@@ -65,7 +79,7 @@ const navigator = createBottomTabNavigator(
 );
 
 // Create the navigator that pushes high-level screens like the `NewPost` screen.
-const SignedIn = createStackNavigator(
+const SignedInNavigator = createStackNavigator(
   {
     Main: {
       screen: navigator,
@@ -81,24 +95,21 @@ const SignedIn = createStackNavigator(
 );
 
 
-export const SignedOut = createStackNavigator({
-  SignUp: {
-    screen: SignUpScreen,
-    navigationOptions: {
-      title: "Sign Up",
-      headerStyle
-    }
+const WelcomeNavigator = createStackNavigator(
+
+  {
+    WelcomeScreen: {
+      screen: Welcome
+    },
+   
+    LoginWithEmail: {
+      screen: Login
+    },
+    SignUpWithEmail: {
+      screen: Register
+    },
   },
-  SignIn: {
-    screen: SignInScreen,
-    navigationOptions: {
-      title: "Sign In",
-      headerStyle
-    }
-  }
-});
-
-
+);
 
 
 
@@ -106,11 +117,13 @@ export const SignedOut = createStackNavigator({
 export const createRootNavigator = (signedIn = false) => {
   return createSwitchNavigator(
     {
+
       SignedIn: {
-        screen: SignedIn
+        screen: SignedInNavigator
       },
       SignedOut: {
-        screen: SignedOut
+        screen: WelcomeNavigator,
+
       }
     },
     {
@@ -126,17 +139,43 @@ export default class App extends React.Component {
 
     this.state = {
       signedIn: false,
-      checkedSignIn: false
+      checkedSignIn: false,
     };
+
+    // this.image = require('./assets/dumbbell.jpg');
+    this.state = { result: "" }
   }
 
   componentDidMount() {
+
+
     isSignedIn()
       .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
       .catch(err => alert("An error occurred"));
   }
+  async _loadAssetsAsync() {
+    const fontAssets = cacheFonts([
+      { RobotoExtraBold: require('./app/assets/fonts/Roboto-Black.ttf') },
+      { RobotoBold: require('./app/assets/fonts/Roboto-Bold.ttf') },
+      { RobotoMedium: require('./app/assets/fonts/Roboto-Medium.ttf') },
+      { RobotoRegular: require('./app/assets/fonts/Roboto-Regular.ttf') },
+      { RobotoLight: require('./app/assets/fonts/Roboto-Light.ttf') }
+    ]);
+
+    await Promise.all([...fontAssets]);
+  }
 
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._loadAssetsAsync}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
+
     const { checkedSignIn, signedIn } = this.state;
 
     // If we haven't checked AsyncStorage yet, don't render anything (better ways to do this)
@@ -145,6 +184,11 @@ export default class App extends React.Component {
     }
 
     const Layout = createRootNavigator(signedIn);
-    return <Layout />;
+    return (
+      <Provider store={store}>
+        <Layout />
+      </Provider>);
   }
 }
+
+

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { actions as auth } from "../../index"
@@ -67,13 +66,14 @@ class Register extends React.Component {
     }
 
     onSubmit(data) {
-        this.setState({error: error}); //clear out error messages
+        this.setState({ error: error }); //clear out error messages
 
         this.props.register(data, this.onSuccess, this.onError)
     }
 
     onSuccess(user) {
-        Actions.Main()
+        this.props.navigation.navigate("SignedIn");
+
     }
 
     onError(error) {
@@ -87,16 +87,16 @@ class Register extends React.Component {
                 errObj[key] = error[key];
             })
         }
-        this.setState({error: errObj});
+        this.setState({ error: errObj });
     }
 
     render() {
         return (
             <Form fields={fields}
-                  showLabel={false}
-                  onSubmit={this.onSubmit}
-                  buttonTitle={"SIGN UP"}
-                  error={this.state.error}/>
+                showLabel={false}
+                onSubmit={this.onSubmit}
+                buttonTitle={"SIGN UP"}
+                error={this.state.error} />
         );
     }
 }

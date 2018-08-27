@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import * as c from "./constants"
+import * as c from "./app/config/constants"
 
 import getUserInfo from './utils/getUserInfo';
 import shrinkImageAsync from './utils/shrinkImageAsync';
@@ -15,24 +15,24 @@ const starCollectionName = 'kodawarin-shimizu-rating';
 
 class FirebaseLogic {
     constructor() {
-        firebase.initializeApp({
-            apiKey: c.FIREBASE_API_KEY,
-            authDomain: c.FIREBASE_AUTH_DOMAIN,
-            databaseURL: c.FIREBASE_DATABASE_URL,
-            projectId: c.FIREBASE_PROJECT_ID,
-            storageBucket: c.FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: c.FIREBASE_MESSAGING_SENDER_ID
+        // firebase.initializeApp({
+        //     apiKey: c.FIREBASE_API_KEY,
+        //     authDomain: c.FIREBASE_AUTH_DOMAIN,
+        //     databaseURL: c.FIREBASE_DATABASE_URL,
+        //     projectId: c.FIREBASE_PROJECT_ID,
+        //     storageBucket: c.FIREBASE_STORAGE_BUCKET,
+        //     messagingSenderId: c.FIREBASE_MESSAGING_SENDER_ID
 
-        });
-        // Some nonsense...
-        firebase.firestore().settings({ timestampsInSnapshots: true });
+        // });
+        // // Some nonsense...
+        // firebase.firestore().settings({ timestampsInSnapshots: true });
 
-        // Listen for auth
-        firebase.auth().onAuthStateChanged(async user => {
-            if (!user) {
-                await firebase.auth().signInAnonymously();
-            }
-        });
+        // // Listen for auth
+        // firebase.auth().onAuthStateChanged(async user => {
+        //     if (!user) {
+        //         await firebase.auth().signInAnonymously();
+        //     }
+        // });
     }
 
     // Download Data

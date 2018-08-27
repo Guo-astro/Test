@@ -59,8 +59,9 @@ class Login extends React.Component {
     }
 
     onSuccess({exists, user}) {
-        if (exists) Actions.Main()
-        else Actions.CompleteProfile({user})
+        if (exists)  this.props.navigation.navigate('SignedIn');
+
+        // else Actions.CompleteProfile({user})
     }
 
     onError(error) {

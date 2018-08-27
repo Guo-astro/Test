@@ -9,13 +9,13 @@
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "app/assets/logos/logo_kodawarin_app.png",
-   
     "packagerOpts": {
       "assetExts": [
         "ttf",
         "mp4",
         "otf",
         "xml"
+       
       ]
     },
     "ios": {

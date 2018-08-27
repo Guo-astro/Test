@@ -45,7 +45,7 @@ class Welcome extends React.Component {
         return (
                 <View style={styles.container}>
                     <View style={styles.topContainer}>
-                        <Image style={styles.image} source={{uri: ""}}/>
+                        <Image style={styles.image} source={require('../../../../assets/logos/logo_kodawarin_app.png')}/>
                         <Text style={styles.title}>Quotes</Text>
                     </View>
 
@@ -75,14 +75,18 @@ class Welcome extends React.Component {
                                 containerViewStyle={[styles.containerView]}
                                 buttonStyle={[styles.button]}
                                 textStyle={styles.buttonText}
-                                onPress={Actions.Register}/>
+                                onPress={() => {
+                                    this.props.navigation.navigate('SignUpWithEmail');
+                                  }}/>
                         </View>
                         <View style={styles.bottom}>
                             <Text style={styles.bottomText}>
                                 Already have an account?
                             </Text>
 
-                            <TouchableOpacity onPress={Actions.Login}>
+                            <TouchableOpacity onPress={() => {
+                                    this.props.navigation.navigate('LoginWithEmail');
+                                  }}>
                                 <Text style={styles.signInText}>
                                     Sign in
                                 </Text>

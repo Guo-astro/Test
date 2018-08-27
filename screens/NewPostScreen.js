@@ -19,7 +19,7 @@ export default class NewPostScreen extends React.Component<Props> {
               navigation.goBack();
               FirebaseLogic.shared.post({ text: text.trim(), image });
             } else {
-              alert('Need valid description');
+              alert('何かを入力してね！');
             }
           }}
         />
